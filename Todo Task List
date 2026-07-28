@@ -1,0 +1,56 @@
+"""We will create a simple 'todo list' application using Python. This application will 
+allow users to add, view, modify, and delete tasks from their todo list. Each task will have a 
+priority and date associated with it. We will use a dictionary to store the tasks, 
+where the keys will be the task names and the values will be a list containing the 
+priority and date.
+"""
+closed = False
+tasks = {}
+while not closed:
+    print("\nTodo List Application")
+    print("1. Add Task")
+    print("2. View Tasks")
+    print("3. Modify Task")
+    print("4. Delete Task")
+    print("5. Exit")
+
+    choice = input("Enter your choice (1-5): ")
+
+    if choice == '1':
+        task_name = input("Enter task name: ")
+        priority = input("Enter task priority (High, Medium, Low): ")
+        date = input("Enter task date (YYYY-MM-DD): ")
+        tasks[task_name] = [priority, date]
+        print(f"Task '{task_name}' added successfully.")
+
+    elif choice == '2':
+        if not tasks:
+            print("No tasks available.")
+        else:
+            for task, details in tasks.items():
+                print(f"Task: {task}, Priority: {details[0]}, Date: {details[1]}")
+
+    elif choice == '3':
+        task_name = input("Enter the task name to modify: ")
+        if task_name in tasks:
+            new_priority = input("Enter new priority (High, Medium, Low): ")
+            new_date = input("Enter new date (YYYY-MM-DD): ")
+            tasks[task_name] = [new_priority, new_date]
+            print(f"Task '{task_name}' modified successfully.")
+        else:
+            print(f"Task '{task_name}' not found.")
+
+    elif choice == '4':
+        task_name = input("Enter the task name to delete: ")
+        if task_name in tasks:
+            del tasks[task_name]
+            print(f"Task '{task_name}' deleted successfully.")
+        else:
+            print(f"Task '{task_name}' not found.")
+
+    elif choice == '5':
+        closed = True
+        print("Exiting the application. Goodbye!")
+
+    else:
+        print("Invalid choice. Please try again.")
