@@ -1,13 +1,12 @@
-"""We will create a simple 'todo list' application using Python. This application will 
-allow users to add, view, modify, and delete tasks from their todo list. Each task will have a 
-priority and date associated with it. We will use a dictionary to store the tasks, 
-where the keys will be the task names and the values will be a list containing the 
-priority and date. 
+"""We will create a simple 'todo list' application using Python. This application will allow users to add, view, modify, and
+delete tasks from their todo list. These tasks will be saved and loaded from a csv file named tasks.csv under the data directory. Each task 
+will have a priority and date associated with it. We will use a dictionary to store the tasks, where the keys will be the task names 
+and the values will be a list containing the priority and date. 
 """
 import csv
 from pathlib import Path
-tasks = {}
 
+tasks = {}
 path = Path(__file__).resolve().parent / 'data/tasks.csv'
 print(path)
 
@@ -32,7 +31,7 @@ except FileNotFoundError:
         print("Permission denied: Unable to create tasks.csv. Please check the file permissions.")
 except PermissionError:
     print("Permission denied: Unable to read tasks.csv. Please check the file permissions.")
-  
+    
 closed = False
 
 while not closed:
