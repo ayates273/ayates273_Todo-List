@@ -2,10 +2,39 @@
 allow users to add, view, modify, and delete tasks from their todo list. Each task will have a 
 priority and date associated with it. We will use a dictionary to store the tasks, 
 where the keys will be the task names and the values will be a list containing the 
-priority and date.
+priority and date. 
 """
-closed = False
+import csv
+from pathlib import Path
 tasks = {}
+
+path = Path(__file__).resolve().parent / 'data/tasks.csv'
+print(path)
+
+def upload_tasks_to_csv():
+    try:
+        with open(path, mode='w', newline='') as file:
+            writer = csv.writer(file)
+            for task, details in tasks.items():
+                writer.writerow([task] + details)
+    except PermissionError:
+        print("Permission denied: Unable to write to tasks.csv. Please check the file permissions.")
+try:
+    with open(path, mode='r', newline='') as file:
+        reader = csv.reader(file)
+        tasks = {row[0]: [row[1], row[2]] for row in reader}
+except FileNotFoundError:
+    print("tasks.csv not found. Creating a new one.")
+    try:
+        with open(path, "w", newline='') as file:
+            pass
+    except PermissionError:
+        print("Permission denied: Unable to create tasks.csv. Please check the file permissions.")
+except PermissionError:
+    print("Permission denied: Unable to read tasks.csv. Please check the file permissions.")
+  
+closed = False
+
 while not closed:
     print("\nTodo List Application")
     print("1. Add Task")
@@ -21,6 +50,7 @@ while not closed:
         priority = input("Enter task priority (High, Medium, Low): ")
         date = input("Enter task date (YYYY-MM-DD): ")
         tasks[task_name] = [priority, date]
+        upload_tasks_to_csv()
         print(f"Task '{task_name}' added successfully.")
 
     elif choice == '2':
@@ -36,6 +66,7 @@ while not closed:
             new_priority = input("Enter new priority (High, Medium, Low): ")
             new_date = input("Enter new date (YYYY-MM-DD): ")
             tasks[task_name] = [new_priority, new_date]
+            upload_tasks_to_csv()
             print(f"Task '{task_name}' modified successfully.")
         else:
             print(f"Task '{task_name}' not found.")
@@ -44,6 +75,7 @@ while not closed:
         task_name = input("Enter the task name to delete: ")
         if task_name in tasks:
             del tasks[task_name]
+            upload_tasks_to_csv()
             print(f"Task '{task_name}' deleted successfully.")
         else:
             print(f"Task '{task_name}' not found.")
